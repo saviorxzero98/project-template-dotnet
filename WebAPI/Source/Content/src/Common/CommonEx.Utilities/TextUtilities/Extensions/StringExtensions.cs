@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CommonEx.Utilities.Extensions
+namespace CommonEx.Utilities.TextUtilities.Extensions
 {
     public static class StringExtensions
     {
@@ -18,7 +18,7 @@ namespace CommonEx.Utilities.Extensions
         /// <returns></returns>
         public static bool IsNull(this string value)
         {
-            return (value == null);
+            return value == null;
         }
         /// <summary>
         /// 字串是否為 Null 或空白
@@ -208,7 +208,7 @@ namespace CommonEx.Utilities.Extensions
                 return false;
             }
 
-            return (value.IndexOf(findValue, _ignoreCase) >= 0);
+            return value.IndexOf(findValue, _ignoreCase) >= 0;
         }
         /// <summary>
         /// 檢查是否包含 (忽略大小寫)
@@ -224,7 +224,7 @@ namespace CommonEx.Utilities.Extensions
                 return false;
             }
 
-            return (value.IndexOf(findText, _ignoreCase) >= 0);
+            return value.IndexOf(findText, _ignoreCase) >= 0;
         }
 
         /// <summary>
@@ -602,7 +602,7 @@ namespace CommonEx.Utilities.Extensions
                 return mainValue;
             }
 
-            var regex = (ignoreCase) ? new Regex(oldValuePattern, RegexOptions.IgnoreCase) : new Regex(oldValuePattern);
+            var regex = ignoreCase ? new Regex(oldValuePattern, RegexOptions.IgnoreCase) : new Regex(oldValuePattern);
 
             if (regex.IsMatch(mainValue))
             {
