@@ -1,0 +1,13 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "You",
+    "classifications": [ "Web" ],
+    "name": "WebAPI Application",
+    "identity": "WebAPIEx",       
+    "shortName": "webapi-ex",                 
+    "tags": {
+        "language": "C#"                       
+    },
+    "sourceName": "WebApiTemplate",      
+    "preferNameDirectory" : true
+}
