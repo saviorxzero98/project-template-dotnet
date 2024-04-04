@@ -1,6 +1,6 @@
-﻿namespace CommonEx.Utilities.TextUtilities.Extensions
+﻿namespace CommonEx.Utilities.HttpClientUtilities.Extensions
 {
-    public static class UriExtensions 
+    public static class UriExtensions
     {
         /// <summary>
         /// Set Port

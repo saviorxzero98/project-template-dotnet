@@ -2,7 +2,7 @@
 
 namespace CommonEx.Database.Entities
 {
-    internal class RecordCountEntity
+    public class RecordCountEntity
     {
         [Column("count")]
         public int Count { get; set; }

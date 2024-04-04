@@ -1,6 +1,6 @@
-﻿namespace CommonEx.Utilities.TextUtilities
+﻿namespace CommonEx.Utilities.Files
 {
-    public static class PathHelper
+    public static class FilePathHelper
     {
         /// <summary>
         /// Get Absolute Path
@@ -37,7 +37,7 @@
         public static string CombinePath(string path1, string path2)
         {
             // Combine Path
-            string path = (Path.Combine(path1, path2));
+            string path = Path.Combine(path1, path2);
 
             // Directory Separator
             path = FormatDirectorySeparatorChar(path);
@@ -55,7 +55,7 @@
         public static string CombinePath(string path1, string path2, string path3)
         {
             // Combine Path
-            string path = (Path.Combine(path1, path2, path3));
+            string path = Path.Combine(path1, path2, path3);
 
             // Directory Separator
             path = FormatDirectorySeparatorChar(path);
@@ -74,7 +74,7 @@
         public static string CombinePath(string path1, string path2, string path3, string path4)
         {
             // Combine Path
-            string path = (Path.Combine(path1, path2, path3, path4));
+            string path = Path.Combine(path1, path2, path3, path4);
 
             // Directory Separator
             path = FormatDirectorySeparatorChar(path);
