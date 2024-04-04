@@ -15,7 +15,7 @@ namespace CommonEx.Database.DbAdapters
         /// <summary>
         /// Database Adapter Type
         /// </summary>
-        public string AdapterType { get => DbAdapterType.Postgres.ToString().ToLower(); }
+        public string AdapterType { get => DatabaseTypes.Postgres.ToString().ToLower(); }
 
 
         public PostgresDbAdapter(string connectionString)

@@ -1,6 +1,7 @@
 ﻿using CommonEx.Database.DbAdapters;
 using CommonEx.Database.Entities;
 using CommonEx.Database.Exceptions;
+using CommonEx.Database.Extensions;
 using CommonEx.Database.Extensions.SqlKataEx;
 using CommonEx.Database.UnitOfWorks;
 using Dapper;

@@ -15,7 +15,7 @@ namespace CommonEx.Database.DbAdapters
         /// <summary>
         /// Database Adapter Type
         /// </summary>
-        public string AdapterType { get => DbAdapterType.SqlServer.ToString().ToLower(); }
+        public string AdapterType { get => DatabaseTypes.SqlServer.ToString().ToLower(); }
 
 
         public SqlServerDbAdapter(string connectionString)

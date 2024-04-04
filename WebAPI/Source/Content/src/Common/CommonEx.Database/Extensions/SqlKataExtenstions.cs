@@ -1,6 +1,8 @@
-﻿using SqlKata;
+﻿using CommonEx.Database.Extensions.SqlKataEx;
+using SqlKata;
+using SqlKata.Extensions;
 
-namespace CommonEx.Database.Extensions.SqlKataEx
+namespace CommonEx.Database.Extensions
 {
     public static class SqlKataExtenstions
     {
@@ -169,6 +171,38 @@ namespace CommonEx.Database.Extensions.SqlKataEx
                 raw = $"{raw} AS [{aliasName}]";
             }
             return query.SelectRaw(raw);
+        }
+
+        #endregion
+
+
+        #region JSON
+
+        /// <summary>
+        /// 查詢 JSON 值
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="column"></param>
+        /// <param name="path"></param>
+        /// <param name="op"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Query WhereJson(this Query query, string column,
+                                      string path, string op, object value)
+        {
+            return query
+                .ForPostgreSql(q =>
+                    q.WhereRaw($"{column} :: JSON #>> '\\{{ {string.Join(',', path.Split('.'))} \\}}' {op} ?", value)
+                )
+                .ForSqlServer(q =>
+                    q.WhereRaw($"JSON_VALUE({column}, '$.{path}') {op} ?", value)
+                )
+                .ForMySql(q =>
+                    q.WhereRaw($"JSON_EXTRACT({column}, '$.{path}') {op} ?", value)
+                )
+                .ForSqlite(q =>
+                    q.WhereRaw($"json_extract({column}, '$.{path}') {op} ?", value)
+                );
         }
 
         #endregion
@@ -420,7 +454,7 @@ namespace CommonEx.Database.Extensions.SqlKataEx
             {
                 return query;
             }
-
+            
             List<string> columns = orderByCondiction.Columns
                                                     .Where(c => !string.IsNullOrWhiteSpace(c))
                                                     .ToList();

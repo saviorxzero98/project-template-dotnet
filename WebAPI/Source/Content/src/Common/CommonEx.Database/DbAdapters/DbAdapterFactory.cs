@@ -1,6 +1,6 @@
 ﻿namespace CommonEx.Database.DbAdapters
 {
-    public enum DbAdapterType
+    public enum DatabaseTypes
     {
         None,
         SqlServer,
@@ -17,20 +17,20 @@
         /// <param name="type"></param>
         /// <param name="connectionString"></param>
         /// <returns></returns>
-        public static IDbAdapter CreateDbAdapter(DbAdapterType type, string connectionString)
+        public static IDbAdapter CreateDbAdapter(DatabaseTypes type, string connectionString)
         {
             switch (type)
             {
-                case DbAdapterType.SqlServer:
+                case DatabaseTypes.SqlServer:
                     return new SqlServerDbAdapter(connectionString);
 
-                case DbAdapterType.Postgres:
+                case DatabaseTypes.Postgres:
                     return new PostgresDbAdapter(connectionString);
 
-                case DbAdapterType.Sqlite:
+                case DatabaseTypes.Sqlite:
                     return new SqliteDbAdapter(connectionString);
 
-                case DbAdapterType.MySql:
+                case DatabaseTypes.MySql:
                     return new MySqlDbAdapter(connectionString);
             }
             return null;
@@ -44,44 +44,44 @@
         /// <returns></returns>
         public static IDbAdapter CreateDbAdapter(string typeName, string connectionString)
         {
-            DbAdapterType type = ToDbAdapterType(typeName);
+            DatabaseTypes type = ParseDbType(typeName);
             return CreateDbAdapter(type, connectionString);
         }
 
         /// <summary>
         /// 解析資料庫類型
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="typeName"></param>
         /// <returns></returns>
-        public static DbAdapterType ToDbAdapterType(string typeName)
+        public static DatabaseTypes ParseDbType(string typeName)
         {
             if (string.IsNullOrEmpty(typeName))
             {
-                return DbAdapterType.None;
+                return DatabaseTypes.None;
             }
 
             switch (typeName.ToLower())
             {
                 case "mssql":
                 case "sqlserver":
-                    return DbAdapterType.SqlServer;
+                    return DatabaseTypes.SqlServer;
 
                 case "sqlite":
                 case "sqlite3":
-                    return DbAdapterType.Sqlite;
+                    return DatabaseTypes.Sqlite;
 
                 case "pgsql":
                 case "postgre":
                 case "postgres":
                 case "postgresql":
-                    return DbAdapterType.Postgres;
+                    return DatabaseTypes.Postgres;
 
                 case "mysql":
                 case "mariadb":
-                    return DbAdapterType.MySql;
+                    return DatabaseTypes.MySql;
 
                 default:
-                    return DbAdapterType.None;
+                    return DatabaseTypes.None;
             }
         }
     }

@@ -15,7 +15,7 @@ namespace CommonEx.Database.DbAdapters
         /// <summary>
         /// Database Adapter Type
         /// </summary>
-        public string AdapterType { get => DbAdapterType.Sqlite.ToString().ToLower(); }
+        public string AdapterType { get => DatabaseTypes.Sqlite.ToString().ToLower(); }
 
 
         public SqliteDbAdapter(string connectionString)
