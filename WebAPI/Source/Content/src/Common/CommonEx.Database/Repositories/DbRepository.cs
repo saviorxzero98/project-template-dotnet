@@ -10,7 +10,7 @@ using System.Data;
 
 namespace CommonEx.Database.Repositories
 {
-    public class GenericDbRepository<TEntity> : IDbRepository<TEntity> where TEntity : class
+    public class DbRepository<TEntity> : IDbRepository<TEntity> where TEntity : class
     {
         /// <summary>
         /// Database Connection
@@ -26,12 +26,12 @@ namespace CommonEx.Database.Repositories
         /// </summary>
         private readonly IDbAdapter _dbAdapter;
 
-        public GenericDbRepository(IDbAdapter dbAdapter, IDbConnection connection)
+        public DbRepository(IDbAdapter dbAdapter, IDbConnection connection)
         {
             _dbAdapter = dbAdapter;
             _connection = connection;
         }
-        public GenericDbRepository(IDbAdapter dbAdapter, IUnitOfWork unitOfWork)
+        public DbRepository(IDbAdapter dbAdapter, IUnitOfWork unitOfWork)
         {
             _dbAdapter = dbAdapter;
             _connection = unitOfWork.Connection;
