@@ -13,4 +13,9 @@
     <PackageReference Include="NSwag.AspNetCore" Version="14.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\CommonEx.Database\CommonEx.Database.csproj" />
+    <ProjectReference Include="..\Common\CommonEx.Utilities\CommonEx.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>
