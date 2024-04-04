@@ -16,6 +16,105 @@ namespace CommonEx.Utilities.DateTimeUtilities.Extensions
             return (value == default(DateTime));
         }
 
+        /// <summary>
+        /// 是否為同一天
+        /// </summary>
+        /// <param name="value1"></param>
+        /// <param name="value2"></param>
+        /// <returns></returns>
+        public static bool EqualsDate(this DateTime value1, DateTime value2)
+        {
+            return DateTime.Equals(value1.Date, value2.Date);
+        }
+
+        /// <summary>
+        /// 減掉時間
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractTicks(this DateTime source, long value)
+        {
+            return source.AddTicks(-value);
+        }
+
+        /// <summary>
+        /// 減掉毫秒
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractMilliseconds(this DateTime source, double value)
+        {
+            return source.AddMilliseconds(-value);
+        }
+
+        /// <summary>
+        /// 減掉秒
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractSeconds(this DateTime source, double value)
+        {
+            return source.AddSeconds(-value);
+        }
+
+        /// <summary>
+        /// 減掉分鐘
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractMinutes(this DateTime source, double value)
+        {
+            return source.AddMinutes(-value);
+        }
+
+        /// <summary>
+        /// 減掉小時
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractHours(this DateTime source, double value)
+        {
+            return source.AddHours(-value);
+        }
+
+        /// <summary>
+        /// 減掉日期
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractDays(this DateTime source, double value)
+        {
+            return source.AddDays(-value);
+        }
+
+        /// <summary>
+        /// 減掉月份
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="months"></param>
+        /// <returns></returns>
+        public static DateTime SubtractMonths(this DateTime source, int months)
+        {
+            return source.AddMonths(-months);
+        }
+
+        /// <summary>
+        /// 減掉年
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime SubtractYears(this DateTime source, int value)
+        {
+            return source.AddYears(-value);
+        }
+
         #endregion
 
 

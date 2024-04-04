@@ -243,131 +243,131 @@ namespace CommonEx.Utilities.CollectionUtilities.Extensions
 
         #region Data Row Extensions
 
-        ///// <summary>
-        ///// Row Count
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <returns></returns>
-        //public static int RowCount(this DataTable table)
-        //{
-        //    return table.Rows.Count;
-        //}
+        /// <summary>
+        /// Row Count
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public static int RowCount(this DataTable table)
+        {
+            return table.Rows.Count;
+        }
 
-        ///// <summary>
-        ///// Take First N Data Rows
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <returns></returns>
-        //public static DataTable TakeTopRows(this DataTable table, int count)
-        //{
-        //    var outTable = table.Rows
-        //                        .TakeTop(count)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Take First N Data Rows
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static DataTable TakeTopRows(this DataTable table, int count)
+        {
+            var outTable = table.Rows
+                                .TakeTop(count)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Take First N Data Rows (With Function)
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <param name="predicate"></param>
-        ///// <returns></returns>
-        //public static DataTable TakeTopRows(this DataTable table, int count, Func<DataRow, bool> predicate)
-        //{
-        //    var outTable = table.Rows
-        //                        .TakeTop(count, predicate)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Take First N Data Rows (With Function)
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static DataTable TakeTopRows(this DataTable table, int count, Func<DataRow, bool> predicate)
+        {
+            var outTable = table.Rows
+                                .TakeTop(count, predicate)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Take Last N Data Rows
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <returns></returns>
-        //public static DataTable TakeLastRows(this DataTable table, int count)
-        //{
-        //    var outTable = table.Rows
-        //                        .TakeLast(count)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Take Last N Data Rows
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static DataTable TakeLastRows(this DataTable table, int count)
+        {
+            var outTable = table.Rows
+                                .TakeLast(count)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Last Last N Data Rows (With Function)
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <param name="predicate"></param>
-        ///// <returns></returns>
-        //public static DataTable TakeLastRows(this DataTable table, int count, Func<DataRow, bool> predicate)
-        //{
-        //    var outTable = table.Rows
-        //                        .TakeLast(count, predicate)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Last Last N Data Rows (With Function)
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static DataTable TakeLastRows(this DataTable table, int count, Func<DataRow, bool> predicate)
+        {
+            var outTable = table.Rows
+                                .TakeLast(count, predicate)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Skip First N Data Rows
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <returns></returns>
-        //public static DataTable SkipTopRows(this DataTable table, int count)
-        //{
-        //    var outTable = table.Rows
-        //                        .SkipTop(count)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Skip First N Data Rows
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static DataTable SkipTopRows(this DataTable table, int count)
+        {
+            var outTable = table.Rows
+                                .SkipTop(count)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Skip First N Data Rows (With Function)
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <param name="predicate"></param>
-        ///// <returns></returns>
-        //public static DataTable SkipTopRows(this DataTable table, int count, Func<DataRow, bool> predicate)
-        //{
-        //    var outTable = table.Rows
-        //                        .SkipTop(count, predicate)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Skip First N Data Rows (With Function)
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static DataTable SkipTopRows(this DataTable table, int count, Func<DataRow, bool> predicate)
+        {
+            var outTable = table.Rows
+                                .SkipTop(count, predicate)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Skip Last N Data Rows
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <returns></returns>
-        //public static DataTable SkipLastRows(this DataTable table, int count)
-        //{
-        //    var outTable = table.Rows
-        //                        .SkipLast(count)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Skip Last N Data Rows
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static DataTable SkipLastRows(this DataTable table, int count)
+        {
+            var outTable = table.Rows
+                                .SkipLast(count)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
-        ///// <summary>
-        ///// Skip Last N Data Rows (With Function)
-        ///// </summary>
-        ///// <param name="table"></param>
-        ///// <param name="count"></param>
-        ///// <param name="predicate"></param>
-        ///// <returns></returns>
-        //public static DataTable SkipLastRows(this DataTable table, int count, Func<DataRow, bool> predicate)
-        //{
-        //    var outTable = table.Rows
-        //                        .SkipLast(count, predicate)
-        //                        .CopyToDataTable();
-        //    return outTable;
-        //}
+        /// <summary>
+        /// Skip Last N Data Rows (With Function)
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="count"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static DataTable SkipLastRows(this DataTable table, int count, Func<DataRow, bool> predicate)
+        {
+            var outTable = table.Rows
+                                .SkipLast(count, predicate)
+                                .CopyToDataTable();
+            return outTable;
+        }
 
         /// <summary>
         /// Filter Data Rows
@@ -413,8 +413,14 @@ namespace CommonEx.Utilities.CollectionUtilities.Extensions
         /// <returns></returns>
         public static DataTable SelectDistinctData(this DataTable table, bool distinct, params string[] columnNames)
         {
-            DataView view = new DataView(table);
-            var outTable = view.ToTable(distinct, columnNames);
+            // Select Columns
+            var outTable = table.SelectColumns(columnNames);
+
+            if (distinct)
+            {
+                // Distinct Data
+                return outTable.DistinctRows();
+            }
             return outTable;
         }
 
