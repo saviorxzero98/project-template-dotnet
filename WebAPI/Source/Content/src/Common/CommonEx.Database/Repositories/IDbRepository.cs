@@ -1,15 +1,35 @@
 ﻿using CommonEx.Database.Extensions.SqlKataEx;
+using CommonEx.Utilities.GuidGenerators;
+using SqlKata.Compilers;
+using System.Data;
 
 namespace CommonEx.Database.Repositories
 {
     public interface IDbRepository<TEntity> where TEntity : class
     {
         /// <summary>
+        /// Database Connection
+        /// </summary>
+        IDbConnection Connection { get ; }
+
+        /// <summary>
+        /// 取得 SQL Compiler
+        /// </summary>
+        /// <returns></returns>
+        Compiler SqlCompiler { get; }
+
+        /// <summary>
+        /// 取得 GUID Generator
+        /// </summary>
+        /// <returns></returns>
+        IGuidGenerator GuidGenerator { get; }
+
+
+        /// <summary>
         /// Get Table Name
         /// </summary>
         /// <returns></returns>
         string GetTableName();
-
 
         /// <summary>
         /// Get First

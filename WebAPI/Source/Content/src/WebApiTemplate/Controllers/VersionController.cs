@@ -6,6 +6,13 @@ namespace WebApiTemplate.Controllers
     [ApiController]
     public class VersionController : ControllerBase
     {
+        private readonly IServiceProvider _services;
+
+        public VersionController(IServiceProvider services)
+        {
+            _services = services;
+        }
+
         /// <summary>
         /// Get Version
         /// </summary>

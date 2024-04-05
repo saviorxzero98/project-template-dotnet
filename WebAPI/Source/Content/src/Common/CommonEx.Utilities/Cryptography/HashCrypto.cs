@@ -1,7 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using CommonEx.Utilities.Cryptography.Encoders;
 
-namespace CommonEx.Utilities.Cryptography.Encoders
+namespace CommonEx.Utilities.Cryptography
 {
     public class HashCrypto
     {
@@ -94,7 +95,7 @@ namespace CommonEx.Utilities.Cryptography.Encoders
         /// </summary>
         /// <param name="algorithm"></param>
         /// <returns></returns>
-        protected HashAlgorithm GetHashAlgorithm(HashAlgorithmType algorithm)
+        public static HashAlgorithm GetHashAlgorithm(HashAlgorithmType algorithm)
         {
             switch (algorithm)
             {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace CommonEx.Utilities.Cryptography
+namespace CommonEx.Utilities.Cryptography.Encoders
 {
     public class Base64Encoder
     {

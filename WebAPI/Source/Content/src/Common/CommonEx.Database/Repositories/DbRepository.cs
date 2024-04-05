@@ -4,8 +4,10 @@ using CommonEx.Database.Exceptions;
 using CommonEx.Database.Extensions;
 using CommonEx.Database.Extensions.SqlKataEx;
 using CommonEx.Database.UnitOfWorks;
+using CommonEx.Utilities.GuidGenerators;
 using Dapper;
 using SqlKata;
+using SqlKata.Compilers;
 using SqlKata.Execution;
 using System.Data;
 
@@ -17,16 +19,34 @@ namespace CommonEx.Database.Repositories
         /// Database Connection
         /// </summary>
         private readonly IDbConnection _connection;
+       
         /// <summary>
         /// Database Connection
         /// </summary>
         public IDbConnection Connection { get => _connection; }
 
         /// <summary>
+        /// 取得 SQL Compiler
+        /// </summary>
+        /// <returns></returns>
+        public Compiler SqlCompiler { get => _dbAdapter.GetSqlCompiler(); }
+
+        /// <summary>
+        /// 取得 GUID Generator
+        /// </summary>
+        /// <returns></returns>
+        public IGuidGenerator GuidGenerator { get => _dbAdapter.GetGuidGenerator(); }
+
+        /// <summary>
         /// Database Adapter
         /// </summary>
         private readonly IDbAdapter _dbAdapter;
 
+        public DbRepository(IDbAdapter dbAdapter)
+        {
+            _dbAdapter = dbAdapter;
+            _connection = _dbAdapter.CreateDbConnection();
+        }
         public DbRepository(IDbAdapter dbAdapter, IDbConnection connection)
         {
             _dbAdapter = dbAdapter;

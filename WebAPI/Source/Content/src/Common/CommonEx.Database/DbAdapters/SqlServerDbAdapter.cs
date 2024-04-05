@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using CommonEx.Utilities.GuidGenerators;
+using Microsoft.Data.SqlClient;
 using SqlKata.Compilers;
 using System.Data;
 
@@ -39,6 +40,15 @@ namespace CommonEx.Database.DbAdapters
         public Compiler GetSqlCompiler()
         {
             return new SqlServerCompiler();
+        }
+
+        /// <summary>
+        /// 取得 GUID Generator
+        /// </summary>
+        /// <returns></returns>
+        public IGuidGenerator GetGuidGenerator()
+        {
+            return GuidV8Generator.Instance;
         }
     }
 }

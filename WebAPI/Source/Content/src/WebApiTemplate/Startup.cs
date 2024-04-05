@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.CookiePolicy;
+﻿using CommonEx.Utilities.DateTimeUtilities;
+using Microsoft.AspNetCore.CookiePolicy;
 
 namespace WebApiTemplate
 {
@@ -22,8 +23,20 @@ namespace WebApiTemplate
             // Add OpenAPI (Swagger)
             AddOpenApi(services);
 
+            // Add Commons Service
+            AddCommonsServices(services);
+
             // Add Memory Cache
             services.AddMemoryCache();
+        }
+
+        /// <summary>
+        /// Add Commons Service
+        /// </summary>
+        /// <param name="services"></param>
+        private void AddCommonsServices(IServiceCollection services)
+        {
+            services.AddSingleton<IClock>(new Clock(DateTimeKind.Local));
         }
 
         /// <summary>
