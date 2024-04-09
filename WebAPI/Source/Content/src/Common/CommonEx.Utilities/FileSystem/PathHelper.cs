@@ -1,4 +1,4 @@
-﻿namespace CommonEx.Utilities.Files
+﻿namespace CommonEx.Utilities.FileSystem
 {
     public static class PathHelper
     {

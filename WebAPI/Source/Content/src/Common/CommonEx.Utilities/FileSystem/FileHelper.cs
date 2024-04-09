@@ -1,7 +1,7 @@
 ﻿using CommonEx.Utilities.Cryptography;
 using MimeTypes;
 
-namespace CommonEx.Utilities.Files
+namespace CommonEx.Utilities.FileSystem
 {
     public static class FileHelper
     {

@@ -1,4 +1,4 @@
-﻿namespace CommonEx.Utilities.Files
+﻿namespace CommonEx.Utilities.FileSystem
 {
     public static class DirectoryHelper
     {
@@ -53,7 +53,7 @@
         /// <param name="recursive"></param>
         public static void Delete(string dirName, string rootPath, bool recursive = true)
         {
-            return Delete(PathHelper.ToAbsolutePath(dirName, rootPath));
+            Delete(PathHelper.ToAbsolutePath(dirName, rootPath), recursive);
         }
         /// <summary>
         /// 刪除目錄
@@ -87,7 +87,7 @@
         /// <param name="destDirPath"></param>
         public static void Move(string sourceDirPath, string destDirPath)
         {
-            if (Directory.Exists(PathHelper.FixPathTraversal(sourceDirPath))
+            if (Directory.Exists(PathHelper.FixPathTraversal(sourceDirPath)))
             {
                 Directory.Move(PathHelper.FixPathTraversal(sourceDirPath),
                                PathHelper.FixPathTraversal(destDirPath));

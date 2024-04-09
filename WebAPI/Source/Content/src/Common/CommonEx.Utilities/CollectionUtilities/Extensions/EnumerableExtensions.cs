@@ -156,5 +156,21 @@ namespace CommonEx.Utilities.CollectionUtilities.Extensions
             }
             return value;
         }
+
+        /// <summary>
+        /// 尋找索引
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static int FindIndex<T>(this IEnumerable<T> list, Func<T, bool> predicate)
+        {
+            var index = list.Select((value, index) => new { value, index })
+                            .Where(x => predicate(x.value))
+                            .Select(x => x.index)
+                            .FirstOrDefault();
+            return index;
+        }
     }
 }
