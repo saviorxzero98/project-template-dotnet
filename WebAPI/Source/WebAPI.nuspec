@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>webapi-ex</id>
-    <version>0.4.0</version>
+    <version>0.6.0</version>
     <description>.NET Web API 應用程式</description>
     <authors>You</authors>
     <projectUrl>https://github.com/saviorxzero98/learning-dotnet</projectUrl>
