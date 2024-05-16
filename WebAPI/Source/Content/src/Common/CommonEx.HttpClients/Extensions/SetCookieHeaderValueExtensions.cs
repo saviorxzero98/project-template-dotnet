@@ -1,7 +1,7 @@
 ﻿using Microsoft.Net.Http.Headers;
 using System.Net;
 
-namespace CommonEx.Utilities.HttpClientUtilities.Extensions
+namespace CommonEx.HttpClients.Extensions
 {
     // <summary>
     /// Set-Cookie

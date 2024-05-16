@@ -6,7 +6,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Text;
 
-namespace CommonEx.Utilities.HttpClientUtilities.Extensions
+namespace CommonEx.HttpClients.Extensions
 {
     public static class HttpResponseMessageExtensions
     {
@@ -80,8 +80,9 @@ namespace CommonEx.Utilities.HttpClientUtilities.Extensions
         /// Get Response Content (JToken)
         /// </summary>
         /// <param name="response"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static JToken GetJsonContentModel(this HttpResponseMessage response)
+        public static JToken GetJsonContentModel(this HttpResponseMessage response, JsonLoadSettings? settings = null)
         {
             // Get Encoding & Content Type
             Encoding encoding = response.GetContentEncoding();
@@ -96,10 +97,10 @@ namespace CommonEx.Utilities.HttpClientUtilities.Extensions
                 switch (contentType.ToLower())
                 {
                     case ContentType.Json:
-                        return JToken.Parse(contentText);
+                        return JToken.Parse(contentText, settings);
 
                     case ContentType.Xml:
-                        return XmlConverter.DeserializeObject(contentText, encoding);
+                        return XmlConverter.DeserializeObject(contentText, encoding, settings);
 
                     default:
                         return new JValue(contentText);
@@ -110,15 +111,16 @@ namespace CommonEx.Utilities.HttpClientUtilities.Extensions
         /// <summary>
         /// Try Get Response Json Content
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
         /// <param name="contentModel"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static bool TryGetJsonContentModel(this HttpResponseMessage response, out JToken contentModel)
+        public static bool TryGetJsonContentModel(this HttpResponseMessage response, out JToken contentModel,
+                                                 JsonLoadSettings? settings = null)
         {
             try
             {
-                contentModel = GetJsonContentModel(response);
+                contentModel = GetJsonContentModel(response, settings);
                 return true;
             }
             catch
@@ -134,8 +136,9 @@ namespace CommonEx.Utilities.HttpClientUtilities.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static T GetContentModel<T>(this HttpResponseMessage response)
+        public static T GetContentModel<T>(this HttpResponseMessage response, JsonSerializerSettings? settings = null)
         {
             // Get Encoding & Content Type
             Encoding encoding = response.GetContentEncoding();
@@ -148,9 +151,9 @@ namespace CommonEx.Utilities.HttpClientUtilities.Extensions
             switch (contentType.ToLower())
             {
                 case ContentType.Json:
-                    return JsonConvert.DeserializeObject<T>(contentText);
+                    return JsonConvert.DeserializeObject<T>(contentText, settings);
                 case ContentType.Xml:
-                    return XmlConverter.DeserializeObject<T>(contentText, encoding);
+                    return XmlConverter.DeserializeObject<T>(contentText, encoding, settings);
             }
 
             return default(T);
@@ -161,12 +164,14 @@ namespace CommonEx.Utilities.HttpClientUtilities.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
         /// <param name="contentModel"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static bool TryGetContentModel<T>(this HttpResponseMessage response, out T contentModel)
+        public static bool TryGetContentModel<T>(this HttpResponseMessage response, out T contentModel,
+                                                 JsonSerializerSettings? settings = null)
         {
             try
             {
-                contentModel = GetContentModel<T>(response);
+                contentModel = GetContentModel<T>(response, settings);
                 return (contentModel != null);
             }
             catch

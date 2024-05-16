@@ -1,4 +1,4 @@
-﻿namespace CommonEx.Utilities.HttpClientUtilities
+﻿namespace CommonEx.HttpClients
 {
     /// <summary>
     /// Form File Content

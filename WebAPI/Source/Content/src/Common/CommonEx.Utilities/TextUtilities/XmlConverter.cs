@@ -68,8 +68,9 @@ namespace CommonEx.Utilities.TextUtilities
         /// </summary>
         /// <param name="xmlString"></param>
         /// <param name="encoding"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static JToken DeserializeObject(string xmlString, Encoding encoding = null)
+        public static JToken DeserializeObject(string xmlString, Encoding? encoding = null, JsonLoadSettings? settings = null)
         {
             if (string.IsNullOrEmpty(xmlString))
             {
@@ -87,7 +88,7 @@ namespace CommonEx.Utilities.TextUtilities
                 xml.Load(ms);
 
                 string jsonText = JsonConvert.SerializeXmlNode(xml.DocumentElement);
-                JToken json = JToken.Parse(jsonText);
+                JToken json = JToken.Parse(jsonText, settings);
                 return json;
             }
         }
@@ -133,8 +134,10 @@ namespace CommonEx.Utilities.TextUtilities
         /// <typeparam name="T"></typeparam>
         /// <param name="xmlString"></param>
         /// <param name="encoding"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static T DeserializeObject<T>(string xmlString, Encoding encoding = null)
+        public static T DeserializeObject<T>(string xmlString, Encoding encoding = null,
+                                             JsonSerializerSettings? settings = null)
         {
             if (encoding == null)
             {
@@ -146,10 +149,9 @@ namespace CommonEx.Utilities.TextUtilities
                 XmlDocument xml = new XmlDocument();
                 xml.Load(ms);
 
-                string jsonText = JsonConvert.SerializeXmlNode(xml.DocumentElement);
-                JToken json = JToken.Parse(jsonText);
+                string jsonString = JsonConvert.SerializeXmlNode(xml.DocumentElement);
                 string rootNodeName = typeof(T).Name;
-                return json[rootNodeName].ToObject<T>();
+                return ToObject<T>(jsonString, rootNodeName, settings);
             }
         }
         /// <summary>
@@ -159,8 +161,10 @@ namespace CommonEx.Utilities.TextUtilities
         /// <param name="xmlString"></param>
         /// <param name="rootNodeName"></param>
         /// <param name="encoding"></param>
+        /// <param name="settings"></param>
         /// <returns></returns>
-        public static T DeserializeObject<T>(string xmlString, string rootNodeName, Encoding encoding = null)
+        public static T DeserializeObject<T>(string xmlString, string rootNodeName,
+                                             Encoding encoding = null, JsonSerializerSettings? settings = null)
         {
             if (encoding == null)
             {
@@ -172,8 +176,29 @@ namespace CommonEx.Utilities.TextUtilities
                 XmlDocument xml = new XmlDocument();
                 xml.Load(ms);
 
-                string jsonText = JsonConvert.SerializeXmlNode(xml.DocumentElement);
-                JToken json = JToken.Parse(jsonText);
+                string jsonString = JsonConvert.SerializeXmlNode(xml.DocumentElement);
+                return ToObject<T>(jsonString, rootNodeName, settings);
+            }
+        }
+
+        /// <summary>
+        /// JSON 字串轉物件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="jsonString"></param>
+        /// <param name="rootNodeName"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        private static T ToObject<T>(string jsonString, string rootNodeName, JsonSerializerSettings? settings = null)
+        {
+            if (settings != null)
+            {
+                JToken json = JsonConvert.DeserializeObject<JToken>(jsonString, settings);
+                return json[rootNodeName].ToObject<T>();
+            }
+            else
+            {
+                JToken json = JToken.Parse(jsonString);
                 return json[rootNodeName].ToObject<T>();
             }
         }

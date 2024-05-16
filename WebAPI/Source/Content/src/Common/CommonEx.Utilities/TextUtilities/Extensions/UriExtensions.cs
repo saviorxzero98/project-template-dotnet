@@ -1,4 +1,4 @@
-﻿namespace CommonEx.Utilities.HttpClientUtilities.Extensions
+﻿namespace CommonEx.Utilities.TextUtilities.Extensions
 {
     public static class UriExtensions
     {

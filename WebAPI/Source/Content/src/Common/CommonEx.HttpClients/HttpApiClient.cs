@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace CommonEx.Utilities.HttpClientUtilities
+namespace CommonEx.HttpClients
 {
     public class HttpApiClient
     {
@@ -19,6 +19,10 @@ namespace CommonEx.Utilities.HttpClientUtilities
         public HttpApiClient()
         {
             _client = new HttpClient();
+        }
+        public HttpApiClient(IHttpClientFactory factory, string clientName = HttpApiSettings.HttpClientName)
+        {
+            _client = factory.CreateClient(clientName);
         }
         public HttpApiClient(HttpClient client)
         {

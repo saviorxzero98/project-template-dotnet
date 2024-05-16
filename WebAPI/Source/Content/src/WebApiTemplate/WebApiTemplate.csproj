@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\CommonEx.HttpClients\CommonEx.HttpClients.csproj" />
     <ProjectReference Include="..\WebApiTemplate.Database\WebApiTemplate.Database.csproj" />
   </ItemGroup>
 
