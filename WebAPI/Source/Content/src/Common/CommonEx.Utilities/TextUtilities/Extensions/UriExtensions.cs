@@ -30,6 +30,20 @@
         }
 
         /// <summary>
+        /// Append Uri Path
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="paths"></param>
+        /// <returns></returns>
+        public static Uri AppendPath(this Uri uri, params string[] paths)
+        {
+            return new Uri(paths.Aggregate(uri.AbsoluteUri,
+                                           (current, path) => string.Format("{0}/{1}",
+                                           current.TrimEnd('/'),
+                                           path.TrimStart('/'))));
+        }
+
+        /// <summary>
         /// Set Query
         /// </summary>
         /// <param name="uri"></param>
@@ -40,14 +54,10 @@
         {
             var builder = new UriBuilder(uri);
 
-            string queryString = string.Empty;
-
             if (!string.IsNullOrEmpty(key))
             {
-                queryString += $"{key}={value}";
+                builder.Query = $"{key}={value}";
             }
-
-            builder.Query = queryString;
 
             return builder.Uri;
         }
@@ -60,25 +70,10 @@
         /// <returns></returns>
         public static Uri SetQuery(this Uri uri, Dictionary<string, string> query)
         {
-            var builder = new UriBuilder(uri);
-
-            string queryString = string.Empty;
-            var keys = new List<string>(query.Keys);
-
-            for (int i = 0; i < keys.Count; i++)
+            var builder = new UriBuilder(uri)
             {
-                var key = keys[i];
-
-                if (i == 0)
-                {
-                    queryString += $"{key}={query[key]}";
-                }
-                else
-                {
-                    queryString += $"&{key}={query[key]}";
-                }
-            }
-            builder.Query = queryString;
+                Query = string.Join("&", query.Select(map => $"{map.Key}={map.Value}"))
+            };
 
             return builder.Uri;
         }
