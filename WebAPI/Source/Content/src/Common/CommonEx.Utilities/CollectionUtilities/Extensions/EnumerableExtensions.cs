@@ -172,5 +172,21 @@ namespace CommonEx.Utilities.CollectionUtilities.Extensions
                             .FirstOrDefault();
             return index;
         }
+
+        /// <summary>
+        /// 滿足條件時，將 Value 加入到 List 中
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static void AddIf<TValue>(this IList<TValue> list, Func<TValue, bool> predicate, TValue value)
+        {
+            if (predicate(value))
+            {
+                list.Add(value);
+            }
+        }
     }
 }

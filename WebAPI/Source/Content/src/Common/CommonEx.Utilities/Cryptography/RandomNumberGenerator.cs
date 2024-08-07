@@ -9,17 +9,18 @@ namespace CommonEx.Utilities.Cryptography
         private const int DoublePrecision = 1000000000;
 
         public uint BytesNumber { get; set; }
-        private RNGCryptoServiceProvider _provider;
+        private RandomNumberGenerator _generator;
 
         public RandomGenerator()
         {
             BytesNumber = DefaultBytesNumber;
-            _provider = new RNGCryptoServiceProvider();
+            _generator = RandomNumberGenerator.Create();
+            
         }
         public RandomGenerator(uint bytesNumber)
         {
             BytesNumber = (bytesNumber > 0) ? bytesNumber : DefaultBytesNumber;
-            _provider = new RNGCryptoServiceProvider();
+            _generator = RandomNumberGenerator.Create();
         }
 
 
@@ -131,7 +132,7 @@ namespace CommonEx.Utilities.Cryptography
         public byte[] NextBytes()
         {
             byte[] randomBytes = new byte[BytesNumber];
-            _provider.GetBytes(randomBytes);
+            _generator.GetBytes(randomBytes);
             return randomBytes;
         }
 

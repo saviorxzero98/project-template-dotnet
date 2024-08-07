@@ -1,6 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using CommonEx.Utilities.Cryptography.Encoders;
+using System.Security.Cryptography;
 using System.Text;
-using CommonEx.Utilities.Cryptography.Encoders;
 
 namespace CommonEx.Utilities.Cryptography
 {
