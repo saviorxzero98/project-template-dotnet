@@ -3,8 +3,34 @@ using System.IO.Compression;
 
 namespace CommonEx.Utilities.TextUtilities
 {
+    public enum TextCompressorType
+    {
+        Deflate,
+        GZip,
+        Brotli,
+        ZLib
+    }
+
+
     public class TextCompressor
     {
+        public TextCompressorType Type { get; set; } = TextCompressorType.Brotli;
+
+        public TextCompressor() : this(TextCompressorType.Brotli)
+        {
+
+        }
+        public TextCompressor(TextCompressorType type)
+        {
+            Type = type;
+        }
+
+        public static TextCompressor Deflate { get => new TextCompressor(TextCompressorType.Deflate); }
+        public static TextCompressor GZip { get => new TextCompressor(TextCompressorType.GZip); }
+        public static TextCompressor Brotli { get => new TextCompressor(TextCompressorType.Brotli); }
+        public static TextCompressor ZLib { get => new TextCompressor(TextCompressorType.ZLib); }
+
+
         /// <summary>
         /// 壓縮字串
         /// </summary>
@@ -13,7 +39,7 @@ namespace CommonEx.Utilities.TextUtilities
         public string Compress(string text)
         {
             using (var memoryStream = new MemoryStream())
-            using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Compress))
+            using (var gzipStream = CreateCompressionStream(memoryStream, CompressionMode.Compress))
             using (var streamWriter = new StreamWriter(gzipStream))
             {
                 streamWriter.Write(text);
@@ -62,7 +88,7 @@ namespace CommonEx.Utilities.TextUtilities
             byte[] bytes = Convert.FromBase64String(text);
 
             using (var memoryStream = new MemoryStream(bytes))
-            using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+            using (var gzipStream = CreateCompressionStream(memoryStream, CompressionMode.Decompress))
             using (var streamReader = new StreamReader(gzipStream))
             {
                 return streamReader.ReadToEnd();
@@ -84,6 +110,33 @@ namespace CommonEx.Utilities.TextUtilities
 
             var deserializeJson = Decompress(text);
             return JsonConvert.DeserializeObject<T>(deserializeJson);
+        }
+
+
+        /// <summary>
+        /// 建立 Compression Stream
+        /// </summary>
+        /// <param name="inStream"></param>
+        /// <param name="mode"></param>
+        /// <param name="leaveOpen"></param>
+        /// <returns></returns>
+        protected Stream CreateCompressionStream(Stream inStream, CompressionMode mode, bool leaveOpen = false)
+        {
+            switch (Type)
+            {
+                case TextCompressorType.Deflate:
+                    return new DeflateStream(inStream, mode, leaveOpen);
+
+                case TextCompressorType.GZip:
+                    return new GZipStream(inStream, mode, leaveOpen);
+
+                case TextCompressorType.ZLib:
+                    return new ZLibStream(inStream, mode, leaveOpen);
+
+                case TextCompressorType.Brotli:
+                default:
+                    return new BrotliStream(inStream, mode, leaveOpen);
+            }
         }
     }
 }
