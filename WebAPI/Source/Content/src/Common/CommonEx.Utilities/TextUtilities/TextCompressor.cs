@@ -39,12 +39,12 @@ namespace CommonEx.Utilities.TextUtilities
         public string Compress(string text)
         {
             using (var memoryStream = new MemoryStream())
-            using (var gzipStream = CreateCompressionStream(memoryStream, CompressionMode.Compress))
-            using (var streamWriter = new StreamWriter(gzipStream))
+            using (var compressionStream = CreateCompressionStream(memoryStream, CompressionMode.Compress))
+            using (var streamWriter = new StreamWriter(compressionStream))
             {
                 streamWriter.Write(text);
                 streamWriter.Close();
-                gzipStream.Close();
+                compressionStream.Close();
 
                 var bytes = memoryStream.ToArray();
                 return Convert.ToBase64String(bytes);
@@ -88,8 +88,8 @@ namespace CommonEx.Utilities.TextUtilities
             byte[] bytes = Convert.FromBase64String(text);
 
             using (var memoryStream = new MemoryStream(bytes))
-            using (var gzipStream = CreateCompressionStream(memoryStream, CompressionMode.Decompress))
-            using (var streamReader = new StreamReader(gzipStream))
+            using (var compressionStream = CreateCompressionStream(memoryStream, CompressionMode.Decompress))
+            using (var streamReader = new StreamReader(compressionStream))
             {
                 return streamReader.ReadToEnd();
             }
