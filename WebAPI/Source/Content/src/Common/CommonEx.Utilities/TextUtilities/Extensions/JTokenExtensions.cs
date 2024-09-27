@@ -80,5 +80,55 @@ namespace CommonEx.Utilities.TextUtilities.Extensions
                 return false;
             }
         }
+
+        /// <summary>
+        /// Replace Value by JsonPath
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="root"></param>
+        /// <param name="path"></param>
+        /// <param name="newValue"></param>
+        /// <returns></returns>
+        public static JToken ReplacePath<T>(this JToken root, string path, T newValue)
+        {
+            if (root == null || path == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (var value in root.SelectTokens(path).ToList())
+            {
+                if (value == root)
+                {
+                    root = JToken.FromObject(newValue);
+                }
+
+                else
+                {
+                    value.Replace(JToken.FromObject(newValue));
+                }
+            }
+
+            return root;
+        }
+
+        /// <summary>
+        /// Remove Value by JsonPath
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="path"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void RemovePath(this JToken root, string path)
+        {
+            if (root == null || path == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (var value in root.SelectTokens(path).ToList())
+            {
+                value.Remove();
+            }
+        }
     }
 }

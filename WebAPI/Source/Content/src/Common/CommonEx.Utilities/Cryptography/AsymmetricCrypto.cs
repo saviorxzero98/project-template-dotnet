@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using CommonEx.Utilities.Cryptography.Encoders;
 
 namespace CommonEx.Utilities.Cryptography
 {
@@ -22,12 +21,12 @@ namespace CommonEx.Utilities.Cryptography
         /// Generate Public Key And Private Key
         /// </summary>
         /// <returns></returns>
-        public AsymmetricCryptoKey GenerateKey()
+        public (string publicKey, string privateKey) GenerateKey()
         {
             var provider = new RSACryptoServiceProvider();
             var publicKey = provider.ToXmlString(false);
             var privateKey = provider.ToXmlString(true);
-            return new AsymmetricCryptoKey(publicKey, privateKey);
+            return (publicKey, privateKey);
         }
 
         /// <summary>
@@ -91,10 +90,10 @@ namespace CommonEx.Utilities.Cryptography
             switch (StringEncode)
             {
                 case EncryptedStringEncode.Hex:
-                    return HexEncoder.Instance.ToHexString(bytes);
+                    return HexConvert.Create().ToHexString(bytes);
 
                 case EncryptedStringEncode.Base64:
-                    return Base64Encoder.Instance.ToBase64String(bytes);
+                    return Base64Convert.Create().ToBase64String(bytes);
 
                 case EncryptedStringEncode.Raw:
                 default:
@@ -112,10 +111,10 @@ namespace CommonEx.Utilities.Cryptography
             switch (StringEncode)
             {
                 case EncryptedStringEncode.Hex:
-                    return HexEncoder.Instance.FromHexString(cipherText);
+                    return HexConvert.Create().FromHexString(cipherText);
 
                 case EncryptedStringEncode.Base64:
-                    return Base64Encoder.Instance.FromBase64String(cipherText);
+                    return Base64Convert.Create().FromBase64String(cipherText);
 
                 case EncryptedStringEncode.Raw:
                 default:

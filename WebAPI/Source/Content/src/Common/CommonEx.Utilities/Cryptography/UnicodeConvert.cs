@@ -1,15 +1,16 @@
 ﻿using System.Text;
 
-namespace CommonEx.Utilities.Cryptography.Encoders
+namespace CommonEx.Utilities.Cryptography
 {
-    public class UnicodeEncoder
+    public class UnicodeConvert
     {
-        public static UnicodeEncoder Instance
+        /// <summary>
+        /// 建立
+        /// </summary>
+        /// <returns></returns>
+        public static UnicodeConvert Create()
         {
-            get
-            {
-                return new UnicodeEncoder();
-            }
+            return new UnicodeConvert();
         }
 
         /// <summary>

@@ -1,22 +1,27 @@
 ﻿using System.Text;
 
-namespace CommonEx.Utilities.Cryptography.Encoders
+namespace CommonEx.Utilities.Cryptography
 {
-    public class HexEncoder
+    public class HexConvert
     {
         public Encoding Encoding { get; set; } = Encoding.UTF8;
 
-        public HexEncoder()
+        public HexConvert()
         {
             Encoding = Encoding.UTF8;
         }
-
-        public static HexEncoder Instance
+        public HexConvert(Encoding encoding)
         {
-            get
-            {
-                return new HexEncoder();
-            }
+            Encoding = encoding ?? Encoding.UTF8;
+        }
+
+        /// <summary>
+        /// 建立
+        /// </summary>
+        /// <returns></returns>
+        public static HexConvert Create()
+        {
+            return new HexConvert();
         }
 
         /// <summary>
@@ -26,14 +31,26 @@ namespace CommonEx.Utilities.Cryptography.Encoders
         /// <returns></returns>
         public string Encode(string text)
         {
+            return Encode(text, Encoding);
+        }
+        /// <summary>
+        /// 字串轉Hex字串
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public string Encode(string text, Encoding? encoding)
+        {
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
-            byte[] bytes = Encoding.GetBytes(text);
+            encoding ??= Encoding;
+            byte[] bytes = encoding.GetBytes(text);
             string hexString = ToHexString(bytes);
             return hexString;
         }
+
 
         /// <summary>
         /// Hex字串轉字串
@@ -41,6 +58,29 @@ namespace CommonEx.Utilities.Cryptography.Encoders
         /// <param name="bytesString"></param>
         /// <returns></returns>
         public string Decode(string bytesString)
+        {
+            if (bytesString == null)
+            {
+                throw new ArgumentNullException(nameof(bytesString));
+            }
+
+            try
+            {
+                byte[] bytes = FromHexString(bytesString);
+                return Encoding.GetString(bytes);
+            }
+            catch
+            {
+                return bytesString;
+            }
+        }
+        /// <summary>
+        /// Hex字串轉字串
+        /// </summary>
+        /// <param name="bytesString"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public string Decode(string bytesString, Encoding? encoding)
         {
             if (bytesString == null)
             {

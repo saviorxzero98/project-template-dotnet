@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 
-namespace CommonEx.Utilities.Cache
+namespace CommonEx.Caching
 {
     public class MemoryCacheManager<TEntity> : ICacheManager<TEntity>
     {

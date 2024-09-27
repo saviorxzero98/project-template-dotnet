@@ -43,7 +43,6 @@ namespace CommonEx.Utilities.FileSystem
         /// 取得檔案 Content Type
         /// </summary>
         /// <param name="filePath"></param>
-        /// <param name="rootPath"></param>
         /// <param name="defaultContentType"></param>
         /// <returns></returns>
         public static string GetContentType(string filePath,
@@ -100,13 +99,12 @@ namespace CommonEx.Utilities.FileSystem
                 return string.Empty;
             }
 
-            using (var hash = HashCrypto.GetHashAlgorithm(type))
-            using (var stream = File.OpenRead(PathHelper.FixPathTraversal(filePath).ToString()))
-            {
-                byte[] checksum = hash.ComputeHash(stream);
-                string bits = BitConverter.ToString(checksum);
-                return bits.Replace("-", string.Empty).ToLower();
-            }
+            using var hash = HashGenerator.GetHashAlgorithm(type);
+            using var stream = File.OpenRead(PathHelper.FixPathTraversal(filePath).ToString());
+
+            byte[] checksum = hash.ComputeHash(stream);
+            string bits = BitConverter.ToString(checksum);
+            return bits.Replace("-", string.Empty).ToLower();
         }
     }
 }

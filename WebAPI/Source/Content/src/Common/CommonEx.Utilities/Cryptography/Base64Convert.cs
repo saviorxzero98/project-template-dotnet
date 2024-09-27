@@ -1,24 +1,34 @@
 ﻿using System.Text;
 
-namespace CommonEx.Utilities.Cryptography.Encoders
+namespace CommonEx.Utilities.Cryptography
 {
-    public class Base64Encoder
+    public class Base64Convert
     {
         public Encoding Encoding { get; set; } = Encoding.UTF8;
         public bool UrlEncodeFlag { get; set; } = false;
 
-        public Base64Encoder()
+        public Base64Convert()
         {
             UrlEncodeFlag = false;
             Encoding = Encoding.UTF8;
         }
-
-        public static Base64Encoder Instance
+        public Base64Convert(Encoding encoding, bool urlEncodeFlag = false)
         {
-            get
+            UrlEncodeFlag = urlEncodeFlag;
+            Encoding = encoding ?? Encoding.UTF8;
+        }
+
+        /// <summary>
+        /// 建立
+        /// </summary>
+        /// <param name="urlEncodeFlag"></param>
+        /// <returns></returns>
+        public static Base64Convert Create(bool urlEncodeFlag = false)
+        {
+            return new Base64Convert()
             {
-                return new Base64Encoder();
-            }
+                UrlEncodeFlag = urlEncodeFlag
+            };
         }
 
         /// <summary>
@@ -28,13 +38,25 @@ namespace CommonEx.Utilities.Cryptography.Encoders
         /// <returns></returns>
         public string Encode(string text)
         {
+            return Encode(text, Encoding);
+        }
+        /// <summary>
+        /// 字串轉Base64字串
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public string Encode(string text, Encoding? encoding)
+        {
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
-            byte[] bytes = Encoding.GetBytes(text);
+            encoding ??= Encoding;
+            byte[] bytes = encoding.GetBytes(text);
             return ToBase64String(bytes);
         }
+
 
         /// <summary>
         /// Bytes轉Base64字串
@@ -66,6 +88,16 @@ namespace CommonEx.Utilities.Cryptography.Encoders
         /// <returns></returns>
         public string Decode(string base64String)
         {
+            return Decode(base64String, Encoding);
+        }
+        /// <summary>
+        /// Base64字串轉字串
+        /// </summary>
+        /// <param name="base64String"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public string Decode(string base64String, Encoding? encoding)
+        {
             if (base64String == null)
             {
                 throw new ArgumentNullException(nameof(base64String));
@@ -78,8 +110,9 @@ namespace CommonEx.Utilities.Cryptography.Encoders
 
             try
             {
+                encoding ??= Encoding;
                 byte[] bytes = FromBase64String(base64String);
-                return Encoding.GetString(bytes);
+                return encoding.GetString(bytes);
             }
             catch
             {
@@ -96,7 +129,6 @@ namespace CommonEx.Utilities.Cryptography.Encoders
         {
             return Convert.FromBase64String(base64String);
         }
-
 
 
         /// <summary>

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-
-namespace CommonEx.Utilities.Cache
+﻿namespace CommonEx.Caching
 {
     public interface ICacheManager<TEntity>
     {

@@ -1,32 +1,52 @@
-﻿using CommonEx.Utilities.Cryptography.Encoders;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace CommonEx.Utilities.Cryptography
 {
     public class SymmetricCrypto
     {
+        /// <summary>
+        /// 對稱式加密演算法
+        /// </summary>
         public SymmetricAlgorithmType Algorithm { get; set; }
+
+        /// <summary>
+        /// 編碼
+        /// </summary>
         public Encoding Encoding { get; set; } = Encoding.UTF8;
-        public CipherMode Cipher { get; set; } = CipherMode.CBC;
+
+        /// <summary>
+        /// Mode
+        /// </summary>
+        public CipherMode Mode { get; set; } = CipherMode.CBC;
+
+        /// <summary>
+        /// Padding
+        /// </summary>
         public PaddingMode Padding { get; set; } = PaddingMode.PKCS7;
-        public EncryptedStringEncode StringEncode { get; set; } = EncryptedStringEncode.Base64;
+
+        /// <summary>
+        /// 密文是否為 Base64 字串
+        /// </summary>
+        public bool IsBase64Cipher { get; set; } = false;
 
         public SymmetricCrypto()
         {
             Algorithm = SymmetricAlgorithmType.AES;
             Padding = PaddingMode.PKCS7;
-            Cipher = CipherMode.CBC;
+            Mode = CipherMode.CBC;
             Encoding = Encoding.UTF8;
-            StringEncode = EncryptedStringEncode.Base64;
         }
-        public SymmetricCrypto(SymmetricAlgorithmType algorithm)
+        public SymmetricCrypto(SymmetricAlgorithmType algorithm,
+                               CipherMode mode = CipherMode.CBC,
+                               PaddingMode padding = PaddingMode.PKCS7,
+                               bool isBase64Cipher = false)
         {
             Algorithm = algorithm;
-            Padding = PaddingMode.PKCS7;
-            Cipher = CipherMode.CBC;
+            Padding = padding;
+            Mode = mode;
+            IsBase64Cipher = isBase64Cipher;
             Encoding = Encoding.UTF8;
-            StringEncode = EncryptedStringEncode.Base64;
         }
 
 
@@ -40,42 +60,18 @@ namespace CommonEx.Utilities.Cryptography
             Encoding = encoding;
             return this;
         }
-        /// <summary>
-        /// 設定 Cipher Mode
-        /// </summary>
-        /// <param name="cipher"></param>
-        /// <returns></returns>
-        public SymmetricCrypto SetCipherMode(CipherMode cipher)
-        {
-            Cipher = cipher;
-            return this;
-        }
-        /// <summary>
-        /// 設定 Cipher Mode
-        /// </summary>
-        /// <param name="padding"></param>
-        /// <returns></returns>
-        public SymmetricCrypto SetPaddingMode(PaddingMode padding)
-        {
-            Padding = padding;
-            return this;
-        }
-
 
         /// <summary>
         /// Generate Key
         /// </summary>
         /// <returns></returns>
-        public SymmetricCryptoKey GenerateKey()
+        public (byte[] key, byte[] iv) GenerateKey()
         {
-            SymmetricAlgorithm provider = CreateEncryptAlgorithm(Algorithm, Cipher, Padding);
+            SymmetricAlgorithm provider = CreateEncryptAlgorithm(Algorithm, Mode, Padding);
             provider.GenerateKey();
             provider.GenerateIV();
-            return new SymmetricCryptoKey(provider.Key, provider.IV);
+            return (key: provider.Key, iv: provider.IV);
         }
-
-
-        #region Encrypt
 
         /// <summary>
         /// Encrypt
@@ -86,49 +82,33 @@ namespace CommonEx.Utilities.Cryptography
         /// <returns></returns>
         public string Encrypt(string plainText, byte[] key, byte[] iv)
         {
-            return Encrypt(plainText, new SymmetricCryptoKey(key, iv));
-        }
-        /// <summary>
-        /// Encrypt
-        /// </summary>
-        /// <param name="plainText"></param>
-        /// <param name="base64Key"></param>
-        /// <param name="base64Iv"></param>
-        /// <returns></returns>
-        public string Encrypt(string plainText, string base64Key, string base64Iv)
-        {
-            return Encrypt(plainText, SymmetricCryptoKey.FromBase64(base64Key, base64Iv));
-        }
-        /// <summary>
-        /// Encrypt
-        /// </summary>
-        /// <param name="plainText"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public string Encrypt(string plainText, SymmetricCryptoKey key)
-        {
             try
             {
-                SymmetricAlgorithm provider = CreateEncryptAlgorithm(Algorithm, Cipher, Padding);
-                provider.Key = key.Key;
-                provider.IV = key.IV;
+                using var algorithm = CreateEncryptAlgorithm(Algorithm, Mode, Padding);
                 byte[] plain = Encoding.GetBytes(plainText);
 
-                ICryptoTransform desencrypt = provider.CreateEncryptor();
-                byte[] bytes = desencrypt.TransformFinalBlock(plain, 0, plain.Length);
+                using MemoryStream memoryStream = new MemoryStream();
+                using CryptoStream cryptoStream = new CryptoStream(memoryStream,
+                                                                   algorithm.CreateEncryptor(key, iv),
+                                                                   CryptoStreamMode.Write);
+                cryptoStream.Write(plain, 0, plain.Length);
+                cryptoStream.FlushFinalBlock();
+                var cipherBytes = memoryStream.ToArray();
 
-                return ToEncryptedString(bytes);
+                if (IsBase64Cipher)
+                {
+                    return Base64Convert.Create().ToBase64String(cipherBytes);
+                }
+                else
+                {
+                    return HexConvert.Create().ToHexString(cipherBytes);
+                }
             }
             catch
             {
-                return plainText;
+                return string.Empty;
             }
         }
-
-        #endregion
-
-
-        #region Decrypt
 
         /// <summary>
         /// Decrypt
@@ -139,121 +119,73 @@ namespace CommonEx.Utilities.Cryptography
         /// <returns></returns>
         public string Decrypt(string cipherText, byte[] key, byte[] iv)
         {
-            return Decrypt(cipherText, new SymmetricCryptoKey(key, iv));
-        }
-        /// <summary>
-        /// Decrypt
-        /// </summary>
-        /// <param name="cipherText"></param>
-        /// <param name="base64Key"></param>
-        /// <param name="base64Iv"></param>
-        /// <returns></returns>
-        public string Decrypt(string cipherText, string base64Key, string base64Iv)
-        {
-            return Decrypt(cipherText, SymmetricCryptoKey.FromBase64(base64Key, base64Iv));
-        }
-        /// <summary>
-        /// Decrypt
-        /// </summary>
-        /// <param name="cipherText"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public string Decrypt(string cipherText, SymmetricCryptoKey key)
-        {
             try
             {
-                SymmetricAlgorithm provider = CreateEncryptAlgorithm(Algorithm, Cipher, Padding);
-                provider.Key = key.Key;
-                provider.IV = key.IV;
+                using var algorithm = CreateEncryptAlgorithm(Algorithm, Mode, Padding);
+                byte[] cipherBytes;
+                if (IsBase64Cipher)
+                {
+                    cipherBytes = Base64Convert.Create().FromBase64String(cipherText);
+                }
+                else
+                {
+                    cipherBytes = HexConvert.Create().FromHexString(cipherText);
+                }
 
-                byte[] cipher = FromEncryptedString(cipherText);
+                using MemoryStream memoryStream = new MemoryStream();
+                using CryptoStream cryptoStream = new CryptoStream(memoryStream,
+                                                                   algorithm.CreateDecryptor(key, iv),
+                                                                   CryptoStreamMode.Write);
+                cryptoStream.Write(cipherBytes, 0, cipherBytes.Length);
+                cryptoStream.FlushFinalBlock();
 
-                ICryptoTransform desencrypt = provider.CreateDecryptor();
-                byte[] bytes = desencrypt.TransformFinalBlock(cipher, 0, cipher.Length);
-
-                return Encoding.GetString(bytes);
+                return Encoding.GetString(memoryStream.ToArray());
             }
             catch
             {
-                return cipherText;
+                return string.Empty;
             }
         }
-
-        #endregion
-
-
-        #region Private
 
         /// <summary>
         /// Create Crypto Algorithm
         /// </summary>
-        /// <param name="algorithm"></param>
+        /// <param name="algorithmType"></param>
         /// <param name="mode"></param>
         /// <param name="padding"></param>
         /// <returns></returns>
-        protected SymmetricAlgorithm CreateEncryptAlgorithm(SymmetricAlgorithmType algorithm, CipherMode mode, PaddingMode padding)
+        protected SymmetricAlgorithm CreateEncryptAlgorithm(SymmetricAlgorithmType algorithmType,
+                                                            CipherMode mode, PaddingMode padding)
         {
-            switch (algorithm)
+            SymmetricAlgorithm algorithm;
+
+            switch (algorithmType)
             {
                 case SymmetricAlgorithmType.Rijndael:
-                    return new RijndaelManaged()
-                    {
-                        Mode = mode,
-                        Padding = padding
-                    };
+                    algorithm = Rijndael.Create();
+                    break;
+
+                case SymmetricAlgorithmType.RC2:
+                    algorithm = RC2.Create();
+                    break;
+
+                case SymmetricAlgorithmType.DES:
+                    algorithm = DES.Create();
+                    break;
+
+                case SymmetricAlgorithmType.TripleDES:
+                    algorithm = TripleDES.Create();
+                    break;
 
                 case SymmetricAlgorithmType.AES:
                 default:
-                    return new AesCryptoServiceProvider()
-                    {
-                        Mode = mode,
-                        Padding = padding
-                    };
+                    algorithm = Aes.Create();
+                    break;
             }
+
+            algorithm.Mode = mode;
+            algorithm.Padding = padding;
+            return algorithm;
         }
-
-        /// <summary>
-        /// Bytes轉字串
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        protected string ToEncryptedString(byte[] bytes)
-        {
-            switch (StringEncode)
-            {
-                case EncryptedStringEncode.Hex:
-                    return HexEncoder.Instance.ToHexString(bytes);
-
-                case EncryptedStringEncode.Base64:
-                    return Base64Encoder.Instance.ToBase64String(bytes);
-
-                case EncryptedStringEncode.Raw:
-                default:
-                    return Encoding.GetString(bytes);
-            }
-        }
-
-        /// <summary>
-        /// 字串轉Bytes
-        /// </summary>
-        /// <param name="cipherText"></param>
-        /// <returns></returns>
-        protected byte[] FromEncryptedString(string cipherText)
-        {
-            switch (StringEncode)
-            {
-                case EncryptedStringEncode.Hex:
-                    return HexEncoder.Instance.FromHexString(cipherText);
-
-                case EncryptedStringEncode.Base64:
-                    return Base64Encoder.Instance.FromBase64String(cipherText);
-
-                case EncryptedStringEncode.Raw:
-                default:
-                    return Encoding.GetBytes(cipherText);
-            }
-        }
-
-        #endregion
     }
 }
