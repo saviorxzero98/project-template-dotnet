@@ -1,4 +1,5 @@
 ﻿using CommonEx.Utilities.TextUtilities;
+using MimeTypes;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -970,7 +971,9 @@ namespace CommonEx.HttpClients
                 {
                     Stream fileStream = files[key].Value;
                     string fileName = files[key].Key;
-                    content.Add(new StreamContent(fileStream), key, fileName);
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.Add(HttpHeaders.ContentType, MimeTypeMap.GetMimeType(fileName));
+                    content.Add(fileContent, key, fileName);
                 }
             }
 
@@ -1005,7 +1008,9 @@ namespace CommonEx.HttpClients
                     string key = file.FormKey;
                     Stream fileStream = file.FileStream;
                     string fileName = file.FileName;
-                    content.Add(new StreamContent(fileStream), key, fileName);
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.Add(HttpHeaders.ContentType, MimeTypeMap.GetMimeType(fileName));
+                    content.Add(fileContent, key, fileName);
                 }
             }
 

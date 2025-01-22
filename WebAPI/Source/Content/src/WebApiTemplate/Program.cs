@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore;
+using NLog;
 using NLog.Web;
 
 namespace WebApiTemplate
@@ -7,7 +8,7 @@ namespace WebApiTemplate
     {
         public static void Main(string[] args)
         {
-            NLogBuilder.ConfigureNLog("NLog.config");
+            LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
             CreateWebHostBuilder(args).Build().Run();
         }
 

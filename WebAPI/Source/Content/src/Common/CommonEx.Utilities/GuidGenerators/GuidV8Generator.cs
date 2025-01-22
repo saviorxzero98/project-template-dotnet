@@ -1,15 +1,14 @@
-﻿using UUIDNext.Generator;
+﻿using UUIDNext;
+using UUIDNext.Generator;
 
 namespace CommonEx.Utilities.GuidGenerators
 {
     public class GuidV8Generator : IGuidGenerator
-    {
-        private static readonly UuidV8SqlServerGenerator _generator = new UuidV8SqlServerGenerator();
-        public static GuidV8Generator Instance { get; } = new GuidV8Generator();
+    {        public static GuidV8Generator Instance { get; } = new GuidV8Generator();
 
         public Guid Create()
         {
-            return _generator.New();
+            return Uuid.NewDatabaseFriendly(Database.SqlServer);
         }
     }
 }

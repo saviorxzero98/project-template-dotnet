@@ -161,10 +161,6 @@ namespace CommonEx.Utilities.Cryptography
 
             switch (algorithmType)
             {
-                case SymmetricAlgorithmType.Rijndael:
-                    algorithm = Rijndael.Create();
-                    break;
-
                 case SymmetricAlgorithmType.RC2:
                     algorithm = RC2.Create();
                     break;

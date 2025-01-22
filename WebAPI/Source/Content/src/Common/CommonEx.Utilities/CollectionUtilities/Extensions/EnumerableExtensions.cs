@@ -158,7 +158,7 @@ namespace CommonEx.Utilities.CollectionUtilities.Extensions
         }
 
         /// <summary>
-        /// 尋找索引
+        /// Find Index
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
@@ -187,6 +187,89 @@ namespace CommonEx.Utilities.CollectionUtilities.Extensions
             {
                 list.Add(value);
             }
+        }
+
+        /// <summary>
+        /// Add if not exists
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool AddIfNotExists<TValue>(this List<TValue> list, TValue value)
+        {
+            var isNotExists = !list.Contains(value);
+            if (!list.Contains(value))
+            {
+                list.Add(value);
+            }
+            return isNotExists;
+        }
+        /// <summary>
+        /// Add if not exists
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool AddIfNotExists<TValue>(this List<TValue> list, Predicate<TValue> predicate, TValue value)
+        {
+            var isNotExists = !list.Exists(predicate);
+            if (isNotExists)
+            {
+                list.Add(value);
+            }
+            return isNotExists;
+        }
+
+        /// <summary>
+        /// Remove if not exists
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool RemoveIfExists<TValue>(this List<TValue> list, TValue value)
+        {
+            var isExist = list.Contains(value);
+            if (isExist)
+            {
+                list.Remove(value);
+            }
+            return isExist;
+        }
+        /// <summary>
+        /// Remove if not exists
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="predicate"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool RemoveIfExists<TValue>(this List<TValue> list, Predicate<TValue> predicate, TValue value)
+        {
+            var isExists = list.Exists(predicate);
+            if (isExists)
+            {
+                list.Remove(value);
+            }
+            return isExists;
+        }
+
+        /// <summary>
+        /// 兩個陣列取差集
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="listA"></param>
+        /// <param name="listB"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static IEnumerable<TValue> ExceptBy<TValue>(this IEnumerable<TValue> listA, IEnumerable<TValue> listB,
+                                                           Func<TValue, TValue, bool> predicate)
+        {
+            var newList = listA.Where(a => !listB.Any((b) => predicate(a, b)));
+            return newList;
         }
     }
 }

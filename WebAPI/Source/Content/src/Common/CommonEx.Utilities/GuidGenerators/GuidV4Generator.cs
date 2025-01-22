@@ -1,15 +1,14 @@
-﻿using UUIDNext.Generator;
+﻿using UUIDNext;
 
 namespace CommonEx.Utilities.GuidGenerators
 {
     public class GuidV4Generator : IGuidGenerator
     {
-        private static readonly UuidV4Generator _generator = new UuidV4Generator();
         public static GuidV4Generator Instance { get; } = new GuidV4Generator();
 
         public Guid Create()
         {
-            return _generator.New();
+            return Uuid.NewRandom();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using UUIDNext.Generator;
+﻿using UUIDNext;
 
 namespace CommonEx.Utilities.GuidGenerators
 {
@@ -12,7 +12,6 @@ namespace CommonEx.Utilities.GuidGenerators
 
     public class GuidV5Generator : IGuidGenerator
     {
-        private static readonly UuidV5Generator _generator = new UuidV5Generator();
         private Guid Namespace { get; set; }
         private string Value { get; set; }
 
@@ -28,12 +27,12 @@ namespace CommonEx.Utilities.GuidGenerators
 
         public Guid Create()
         {
-            return _generator.New(Namespace, Value);
+            return Uuid.NewNameBased(Namespace, Value);
         }
         public Guid Create(GuidNamespaceType type, string value)
         {
             var namespaceBase = GetNamespaceBase(type);
-            return _generator.New(namespaceBase, value);
+            return Uuid.NewNameBased(namespaceBase, value);
         }
 
 
