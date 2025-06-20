@@ -3,7 +3,7 @@
 ## Install
 
 ```
-dotnet new install webapi-ex.0.10.0.nupkg
+dotnet new install webapi-ex.0.12.0.nupkg
 ```
 
 

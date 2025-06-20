@@ -9,7 +9,7 @@
         /// <param name="rootPath"></param>
         public static void Create(string dirName, string rootPath)
         {
-            Create(PathHelper.ToAbsolutePath(dirName, rootPath));
+            Create(FilePathHelper.ToAbsolutePath(dirName, rootPath));
         }
         /// <summary>
         /// 建立目錄
@@ -17,9 +17,9 @@
         /// <param name="dirPath"></param>
         public static void Create(string dirPath)
         {
-            if (!Directory.Exists(PathHelper.FixPathTraversal(dirPath)))
+            if (!Directory.Exists(FilePathHelper.FixPathTraversal(dirPath)))
             {
-                Directory.CreateDirectory(PathHelper.FixPathTraversal(dirPath));
+                Directory.CreateDirectory(FilePathHelper.FixPathTraversal(dirPath));
             }
         }
 
@@ -32,7 +32,7 @@
         /// <returns></returns>
         public static DirectoryInfo CreateInfo(string dirName, string rootPath)
         {
-            return CreateInfo(PathHelper.ToAbsolutePath(dirName, rootPath));
+            return CreateInfo(FilePathHelper.ToAbsolutePath(dirName, rootPath));
         }
         /// <summary>
         /// 建立目錄資訊
@@ -41,7 +41,7 @@
         /// <returns></returns>
         public static DirectoryInfo CreateInfo(string dirPath)
         {
-            return new DirectoryInfo(PathHelper.FixPathTraversal(dirPath));
+            return new DirectoryInfo(FilePathHelper.FixPathTraversal(dirPath));
         }
 
 
@@ -53,7 +53,7 @@
         /// <param name="recursive"></param>
         public static void Delete(string dirName, string rootPath, bool recursive = true)
         {
-            Delete(PathHelper.ToAbsolutePath(dirName, rootPath), recursive);
+            Delete(FilePathHelper.ToAbsolutePath(dirName, rootPath), recursive);
         }
         /// <summary>
         /// 刪除目錄
@@ -62,9 +62,9 @@
         /// <param name="recursive"></param>
         public static void Delete(string dirPath, bool recursive = true)
         {
-            if (Directory.Exists(PathHelper.FixPathTraversal(dirPath)))
+            if (Directory.Exists(FilePathHelper.FixPathTraversal(dirPath)))
             {
-                Directory.Delete(PathHelper.FixPathTraversal(dirPath), recursive);
+                Directory.Delete(FilePathHelper.FixPathTraversal(dirPath), recursive);
             }
         }
 
@@ -77,8 +77,8 @@
         /// <param name="destRootPath"></param>
         public static void Move(string dirName, string sourceRootPath, string destRootPath)
         {
-            Move(PathHelper.ToAbsolutePath(dirName, sourceRootPath),
-                 PathHelper.ToAbsolutePath(dirName, destRootPath));
+            Move(FilePathHelper.ToAbsolutePath(dirName, sourceRootPath),
+                 FilePathHelper.ToAbsolutePath(dirName, destRootPath));
         }
         /// <summary>
         /// 搬移目錄
@@ -87,10 +87,10 @@
         /// <param name="destDirPath"></param>
         public static void Move(string sourceDirPath, string destDirPath)
         {
-            if (Directory.Exists(PathHelper.FixPathTraversal(sourceDirPath)))
+            if (Directory.Exists(FilePathHelper.FixPathTraversal(sourceDirPath)))
             {
-                Directory.Move(PathHelper.FixPathTraversal(sourceDirPath),
-                               PathHelper.FixPathTraversal(destDirPath));
+                Directory.Move(FilePathHelper.FixPathTraversal(sourceDirPath),
+                               FilePathHelper.FixPathTraversal(destDirPath));
             }
         }
 
@@ -104,8 +104,8 @@
         /// <param name="copySubDirs"></param>
         public static void Copy(string dirName, string sourceRootPath, string destRootPath, bool copySubDirs = true)
         {
-            Copy(PathHelper.ToAbsolutePath(dirName, sourceRootPath),
-                 PathHelper.ToAbsolutePath(dirName, destRootPath),
+            Copy(FilePathHelper.ToAbsolutePath(dirName, sourceRootPath),
+                 FilePathHelper.ToAbsolutePath(dirName, destRootPath),
                  copySubDirs);
         }
         /// <summary>
@@ -116,7 +116,7 @@
         /// <param name="copySubDirs"></param>
         public static void Copy(string sourceDirPath, string destDirPath, bool copySubDirs = true)
         {
-            var dir = new DirectoryInfo(PathHelper.FixPathTraversal(sourceDirPath));
+            var dir = new DirectoryInfo(FilePathHelper.FixPathTraversal(sourceDirPath));
             if (!dir.Exists)
             {
                 var errorMessage = $"Source directory does not exist or could not be found: {sourceDirPath}";
@@ -124,13 +124,13 @@
             }
 
             // 建立新的目錄
-            Create(PathHelper.FixPathTraversal(destDirPath));
+            Create(FilePathHelper.FixPathTraversal(destDirPath));
 
             // 搬移目錄下的檔案
             var files = dir.GetFiles();
             foreach (var file in files)
             {
-                var tempPath = PathHelper.Combine(PathHelper.FixPathTraversal(destDirPath), file.Name);
+                var tempPath = FilePathHelper.Combine(FilePathHelper.FixPathTraversal(destDirPath), file.Name);
                 file.CopyTo(tempPath, false);
             }
 
@@ -140,7 +140,7 @@
                 var dirs = dir.GetDirectories();
                 foreach (var subdir in dirs)
                 {
-                    var tempPath = PathHelper.Combine(PathHelper.FixPathTraversal(destDirPath), subdir.Name);
+                    var tempPath = FilePathHelper.Combine(FilePathHelper.FixPathTraversal(destDirPath), subdir.Name);
                     Copy(subdir.FullName, tempPath, copySubDirs);
                 }
             }

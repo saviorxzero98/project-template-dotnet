@@ -3,16 +3,18 @@ using System.Net;
 
 namespace CommonEx.HttpClients.Extensions
 {
-    // <summary>
-    /// Set-Cookie
-    /// </summary>
     public static class SetCookieHeaderValueExtensions
     {
+        /// <summary>
+        /// Set Cookie Header Value to Cookie
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Cookie ToCookie(this SetCookieHeaderValue value)
         {
             var cookie = new Cookie()
             {
-                Name = value.Name.Value,
+                Name = value.Name.Value ?? string.Empty,
                 Value = value.Value.Value,
                 Domain = value.Domain.Value,
                 Secure = value.Secure,

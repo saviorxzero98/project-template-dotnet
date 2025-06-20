@@ -10,7 +10,7 @@ namespace CommonEx.Utilities.ObjectUtilities
         /// <typeparam name="T"></typeparam>
         /// <param name="sourceData"></param>
         /// <returns></returns>
-        public static T Clone<T>(T sourceData)
+        public static T? Clone<T>(T? sourceData)
         {
             if (sourceData == null)
             {

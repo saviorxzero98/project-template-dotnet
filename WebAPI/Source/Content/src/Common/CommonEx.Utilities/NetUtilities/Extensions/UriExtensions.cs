@@ -1,4 +1,4 @@
-﻿namespace CommonEx.Utilities.TextUtilities.Extensions
+﻿namespace CommonEx.Utilities.NetUtilities.Extensions
 {
     public static class UriExtensions
     {

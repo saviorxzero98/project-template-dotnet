@@ -7,19 +7,19 @@
         /// </summary>
         /// <param name="key"></param>
         /// <param name="cacheMissCallback"></param>
-        /// <param name="options"></param>
         /// <returns></returns>
-        Task<TEntity> GetAsync(string key,
-                               Func<Task<TEntity>>? cacheMissCallback = null,
-                               CacheOptions options = null);
+        Task<TEntity?> GetOrDefaultAsync(string key, Func<string, Task<TEntity?>>? cacheMissCallback);
 
         /// <summary>
-        /// 取得 Cache 值
+        /// 取得 Cache 值，Cache Miss 時設定 Cache 值
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="cacheMissCallback"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        Task<bool> TryGetAsync(string key, out TEntity value);
+        Task<TEntity> GetOrSetAsync(string key,
+                                    Func<string, Task<TEntity>>? cacheMissCallback = null,
+                                    CacheOptions options = null);
 
         /// <summary>
         /// 設定 Cache 值

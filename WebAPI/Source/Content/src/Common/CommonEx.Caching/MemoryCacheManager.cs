@@ -18,19 +18,39 @@ namespace CommonEx.Caching
             _options = option;
         }
 
-
         /// <summary>
         /// 取得 Cache 值
         /// </summary>
         /// <param name="key"></param>
         /// <param name="cacheMissCallback"></param>
+        /// <returns></returns>
+        public Task<TEntity?> GetOrDefaultAsync(string key, Func<string, Task<TEntity?>>? cacheMissCallback)
+        {
+            if (_cache.TryGetValue(key, out TEntity? value))
+            {
+                return Task.FromResult(value);
+            }
+
+            if (cacheMissCallback == null)
+            {
+                return Task.FromResult(default(TEntity));
+            }
+
+            return cacheMissCallback.Invoke(key);
+        }
+
+        /// <summary>
+        /// 取得 Cache 值，Cache Miss 時設定 Cache 值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="cacheMissCallback"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<TEntity> GetAsync(string key,
-                                            Func<Task<TEntity>>? cacheMissCallback = null,
-                                            CacheOptions options = null)
+        public async Task<TEntity> GetOrSetAsync(string key,
+                                                 Func<string, Task<TEntity>>? cacheMissCallback = null,
+                                                 CacheOptions options = null)
         {
-            if (_cache.TryGetValue(key, out TEntity cacheValue))
+            if (_cache.TryGetValue(key, out TEntity? cacheValue))
             {
                 return cacheValue;
             }
@@ -40,21 +60,10 @@ namespace CommonEx.Caching
                 return default(TEntity);
             }
 
-            var newValue = await cacheMissCallback.Invoke();
+            var newValue = await cacheMissCallback.Invoke(key);
             return await SetAsync(key, newValue, options);
         }
 
-        /// <summary>
-        /// 取得 Cache 值
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public Task<bool> TryGetAsync(string key, out TEntity value)
-        {
-            var result = _cache.TryGetValue(key, out value);
-            return Task.FromResult(result);
-        }
 
         /// <summary>
         /// 設定 Cache 值
@@ -66,13 +75,14 @@ namespace CommonEx.Caching
         public Task<TEntity> SetAsync(string key, TEntity value, CacheOptions options = null)
         {
             TEntity cacheValue;
-            if (options != null)
+            var cacheOptions = ToEntryOptions(options ?? _options);
+            if (cacheOptions != null)
             {
-                cacheValue = _cache.Set(key, value, ToEntryOptions(options));
+                cacheValue = _cache.Set(key, value, cacheOptions);
             }
             else
             {
-                cacheValue = _cache.Set(key, value, ToEntryOptions(_options));
+                cacheValue = _cache.Set(key, value);
             }
             return Task.FromResult(cacheValue);
         }

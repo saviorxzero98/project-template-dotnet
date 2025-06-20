@@ -13,7 +13,7 @@ namespace CommonEx.Utilities.FileSystem
         /// <returns></returns>
         public static FileInfo CreateInfo(string fileName, string rootPath)
         {
-            return CreateInfo(PathHelper.ToAbsolutePath(fileName, rootPath));
+            return CreateInfo(FilePathHelper.ToAbsolutePath(fileName, rootPath));
         }
         /// <summary>
         /// 取得檔案資訊
@@ -22,7 +22,7 @@ namespace CommonEx.Utilities.FileSystem
         /// <returns></returns>
         public static FileInfo CreateInfo(string filePath)
         {
-            return new FileInfo(PathHelper.FixPathTraversal(filePath));
+            return new FileInfo(FilePathHelper.FixPathTraversal(filePath));
         }
 
 
@@ -36,7 +36,7 @@ namespace CommonEx.Utilities.FileSystem
         public static string GetContentType(string fileName, string rootPath,
                                             string defaultContentType = "application/octet-stream")
         {
-            return GetContentType(PathHelper.ToAbsolutePath(fileName, rootPath),
+            return GetContentType(FilePathHelper.ToAbsolutePath(fileName, rootPath),
                                   defaultContentType);
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace CommonEx.Utilities.FileSystem
         public static string GetContentType(string filePath,
                                             string defaultContentType = "application/octet-stream")
         {
-            var contentType = MimeTypeMap.GetMimeType(PathHelper.FixPathTraversal(filePath));
+            var contentType = MimeTypeMap.GetMimeType(FilePathHelper.FixPathTraversal(filePath));
             return contentType ?? defaultContentType;
         }
 
@@ -59,7 +59,7 @@ namespace CommonEx.Utilities.FileSystem
         /// <param name="rootPath"></param>
         public static void Delete(string fileName, string rootPath)
         {
-            Delete(PathHelper.ToAbsolutePath(fileName, rootPath));
+            Delete(FilePathHelper.ToAbsolutePath(fileName, rootPath));
         }
         /// <summary>
         /// 刪除檔案
@@ -67,9 +67,9 @@ namespace CommonEx.Utilities.FileSystem
         /// <param name="filePath"></param>
         public static void Delete(string filePath)
         {
-            if (File.Exists(PathHelper.FixPathTraversal(filePath)))
+            if (File.Exists(FilePathHelper.FixPathTraversal(filePath)))
             {
-                File.Delete(PathHelper.FixPathTraversal(filePath));
+                File.Delete(FilePathHelper.FixPathTraversal(filePath));
             }
         }
 
@@ -84,7 +84,7 @@ namespace CommonEx.Utilities.FileSystem
         public static string GetFileHash(string fileName, string rootPath,
                                          HashAlgorithmType type = HashAlgorithmType.MD5)
         {
-            return GetFileHash(PathHelper.ToAbsolutePath(fileName, rootPath), type);
+            return GetFileHash(FilePathHelper.ToAbsolutePath(fileName, rootPath), type);
         }
         /// <summary>
         /// 取得檔案雜湊值
@@ -94,13 +94,13 @@ namespace CommonEx.Utilities.FileSystem
         /// <returns></returns>
         public static string GetFileHash(string filePath, HashAlgorithmType type = HashAlgorithmType.MD5)
         {
-            if (!File.Exists(PathHelper.FixPathTraversal(filePath)))
+            if (!File.Exists(FilePathHelper.FixPathTraversal(filePath)))
             {
                 return string.Empty;
             }
 
             using var hash = HashGenerator.GetHashAlgorithm(type);
-            using var stream = File.OpenRead(PathHelper.FixPathTraversal(filePath).ToString());
+            using var stream = File.OpenRead(FilePathHelper.FixPathTraversal(filePath).ToString());
 
             byte[] checksum = hash.ComputeHash(stream);
             string bits = BitConverter.ToString(checksum);
